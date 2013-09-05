@@ -19,9 +19,9 @@ grunt
 grunt test      
 
 // Lance la démo (accessible depuis http://localhost:3001)
-grunt connect   
+grunt demo   
 
-// Build, test, versionne et package le web-component
+// Build, test, bump version
 grunt dist      
 
 
