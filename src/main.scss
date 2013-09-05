@@ -1,0 +1,58 @@
+@import "compass/css3/box-sizing";
+@import "compass/css3/transition";
+@import "compass/css3/transform";
+@import "compass/css3/opacity";
+
+x-modal {
+    display: block;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+
+    @include box-sizing(border-box);
+    @include translate(-50%, -50%);
+
+    max-width: 100%;
+    max-height: 100%;
+    overflow: auto;
+
+    background: white;
+    border: 1px solid #333;
+
+    z-index: 1; // pour pouvoir passer au-dessus de la launchbar si trop grand
+}
+
+.x-modal-title {
+    background: lightblue;
+    position: relative;
+    min-height: 20px;
+    padding-right: 25px;
+}
+
+.x-modal-close {
+    position: absolute;
+    top: 4px;
+    right: 3px;
+    &:before {
+        content: "X";
+    }
+}
+
+x-modal[hidden] {
+    display: none;
+}
+
+.x-modal-overlay {
+    position: absolute;
+    top: -10000px;
+    right: -10000px;
+    bottom: -10000px;
+    left: -10000px;
+    background: black;
+    @include opacity(0.5);
+    display: block;
+}
+
+.x-modal-overlay[hidden] {
+    display: none;
+}
