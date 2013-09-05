@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "repository": {
     "type": "git",
-    "url": "git://github.com:viareport/web-components.git"
+    "url": "git://github.com:viareport/inativ-x-modal.git"
   },
   "main": "./dist/main.js",
   "keywords": [
