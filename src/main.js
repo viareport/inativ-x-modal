@@ -1,8 +1,25 @@
-(function(){  
+(function(){
     xtag.register('x-modal', {
         lifecycle: {
             created: function created() {
                 var modal = this;
+
+                this.titleElement = document.createElement("span");
+                this.titleElement.classList.add('x-modal-title-content');
+
+                this.contentElement = document.createElement("div");
+                this.contentElement.classList.add("x-modal-content");
+
+                var titleBar = document.createElement("div");
+                titleBar.classList.add("x-modal-title");
+                var closeElement = document.createElement("span");
+                closeElement.classList.add("x-modal-close");
+                titleBar.appendChild(this.titleElement);
+                titleBar.appendChild(closeElement);
+
+                this.appendChild(titleBar);
+                this.appendChild(this.contentElement);
+
                 this.onKeyUp = function closeOnKeyUp(e) {
                     if (e.which === 27 && !modal.getAttribute('hidden')) {
                         modal.setAttribute('hidden', '');
@@ -23,37 +40,44 @@
             },
             attributeChanged: function attributedChanged(attribute) {
                 switch (attribute) {
-                case 'hidden':
-                    if (this.hasAttribute(attribute)) {
-                        if (this.mask) {
-                            this.mask.setAttribute('hidden', '');
-                        }
-                        this.removeEvents();
-                    } else {
-                        this.registerEvent(document, 'keyup', this.onKeyUp);
+                    case 'hidden':
+                        if (this.hasAttribute(attribute)) {
+                            if (this.mask) {
+                                this.mask.setAttribute('hidden', '');
+                            }
+                            this.removeEvents();
+                        } else {
+                            this.registerEvent(document, 'keyup', this.onKeyUp);
 
-                        if (this.mask) {
-                            this.mask.removeAttribute('hidden');
+                            if (this.mask) {
+                                this.mask.removeAttribute('hidden');
+                            }
                         }
-                    }
-                    break;
-                case 'overlay':
-                    if (this.hasAttribute(attribute)) {
-                        this.createOverlay();
-                    } else {
-                        this.removeOverlay();
-                    }
-                    break;
+                        break;
+                    case 'overlay':
+                        if (this.hasAttribute(attribute)) {
+                            this.createOverlay();
+                        } else {
+                            this.removeOverlay();
+                        }
+                        break;
                 }
             }
         },
         methods: {
+            render: function (title, content) {
+                this.setTitle(title);
+                this.setContent(content);
+            },
             show: function(title, content) {
-                this.title = title;
-                this.innerHTML = '<div class="x-modal-title">' + title +
-                    '<span class="x-modal-close"/></div><div class="x-modal-content">' +
-                    content + '</div>';
+                this.render(title, content);
                 this.removeAttribute('hidden');
+            },
+            setContent: function setContent(content) {
+                this.contentElement.innerHTML = content;
+            },
+            setTitle: function setTitle(title) {
+                this.titleElement.innerHTML = title;
             },
             close: function() {
                 this.setAttribute('hidden', '');
@@ -77,15 +101,15 @@
                     this.parentNode.removeChild(this.mask);
                 }
             },
-            registerEvent: function(node, eventType, listener) {
+            registerEvent: function(node, eventType, eventHandler) {
                 if (typeof this._registeredEvents === 'undefined') {
                     this._registeredEvents = [];
                 }
-                node.addEventListener(eventType, listener);
+                node.addEventListener(eventType, eventHandler);
                 this._registeredEvents.push({
                     node: node,
                     eventType: eventType,
-                    listener: listener
+                    listener: eventHandler
                 });
             },
             removeEvents: function() {
@@ -96,7 +120,7 @@
                 }
             },
             getTitle: function() {
-                 return this.title;
+                return this.title;
             }
         },
         events: {

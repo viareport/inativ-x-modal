@@ -9,7 +9,7 @@ Testem.useCustomAdapter(function(socket) {
 testSuite.addTest("Display test", function(scenario, asserter) {
 
     asserter.assertTrue(function() {
-        return document.querySelectorAll('.x-modal-content').length === 0;
+        return document.querySelector('x-modal').hasAttribute('hidden');
     }, 'Au début, la modale ne doit pas être visible');
 
     scenario
@@ -21,6 +21,10 @@ testSuite.addTest("Display test", function(scenario, asserter) {
     asserter.assertTrue(function() {
         return document.querySelectorAll('.x-modal-content').length === 1;
     }, 'La modale doit être visible');
+
+    asserter.assertTrue(function() {
+        return ! document.querySelector('x-modal').hasAttribute('hidden');
+    }, 'La modale doit être visible (attr hidden)');
 
     scenario.click('.x-modal-close');
 
