@@ -77,6 +77,7 @@
                 this.contentElement.innerHTML = content;
             },
             setTitle: function setTitle(title) {
+                this.title = title; // Sinon le getTitle() ne sert à rien
                 this.titleElement.innerHTML = title;
             },
             close: function() {
