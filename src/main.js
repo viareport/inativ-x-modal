@@ -80,6 +80,13 @@
                 this.title = title; // Sinon le getTitle() ne sert à rien
                 this.titleElement.innerHTML = title;
             },
+            setVisible: function(bool){
+                if(bool){
+                    this.removeAttribute('hidden');
+                } else {
+                    this.setAttribute('hidden', '');
+                }
+            },
             close: function() {
                 this.setAttribute('hidden', '');
             },
