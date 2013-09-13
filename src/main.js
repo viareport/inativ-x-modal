@@ -35,7 +35,7 @@
                 }
             },
             removed: function removed() {
-                this.setAttribute('hidden', '');
+                this.close();
                 this.removeOverlay();
             },
             attributeChanged: function attributedChanged(attribute) {
@@ -45,7 +45,6 @@
                             if (this.mask) {
                                 this.mask.setAttribute('hidden', '');
                             }
-                            this.removeEvents();
                         } else {
                             this.registerEvent(document, 'keyup', this.onKeyUp);
 
@@ -89,6 +88,7 @@
             },
             close: function() {
                 this.setAttribute('hidden', '');
+                this.removeEvents();
             },
 
             isVisible: function() {
