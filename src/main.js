@@ -4,6 +4,9 @@
             created: function created() {
                 var modal = this;
 
+                this.modalWrapper = document.createElement("div");
+                this.modalWrapper.classList.add('x-modal-wrapper-content');
+
                 this.titleElement = document.createElement("span");
                 this.titleElement.classList.add('x-modal-title-content');
 
@@ -17,8 +20,10 @@
                 titleBar.appendChild(this.titleElement);
                 titleBar.appendChild(closeElement);
 
-                this.appendChild(titleBar);
-                this.appendChild(this.contentElement);
+                this.modalWrapper.appendChild(titleBar);
+                this.modalWrapper.appendChild(this.contentElement);
+
+                this.appendChild(this.modalWrapper);
 
                 this.onKeyUp = function closeOnKeyUp(e) {
                     if (e.which === 27 && !modal.getAttribute('hidden')) {

@@ -1,10 +1,6 @@
-var TestSuite = require('spatester').TestSuite;
+var TestSuite = require('spatester');
 
 var testSuite = new TestSuite("Modal test", {});
-
-Testem.useCustomAdapter(function(socket) {
-    testSuite.setSocket(socket);
-});
 
 testSuite.addTest("Display test", function(scenario, asserter) {
 
