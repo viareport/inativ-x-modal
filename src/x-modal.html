@@ -69,37 +69,42 @@
         }
     </style>
     <template>
-        <div class="x-modal-title">
-            <span class="x-modal-title-content"><content select="h3">Title</content></span>
-            <span class="x-modal-close"></span>
-        </div>
-        <div class="x-modal-content">
-            <content select="p">Content</content>
-        </div>
     </template>
     <script>
+
+        function createOverlay() {
+            this.overlay = this.parentNode.querySelector('.x-modal-overlay');
+            if (!this.overlay) {
+                var overlay = document.createElement('div');
+                overlay.className += ' x-modal-overlay';
+                overlay.setAttribute('hidden', '');
+                this.parentNode.insertBefore(overlay, this);
+                this.overlay = overlay;
+            }
+        }
+        function removeOverlay() {
+            if (this.overlay) {
+                this.parentNode.removeChild(this.overlay);
+            }
+        }
+
         ({
             show: function() {
                 this.removeAttribute('hidden');
-                if (this.overlay) {
-                    this.overlay.removeAttribute('hidden');
-                }
             },
             hide: function() {
                 this.setAttribute('hidden', '');
-                if (this.overlay) {
-                    this.overlay.setAttribute('hidden', '');
-                }
             },
             close: function() {
                 this.hide();
             },
             readyCallback: function() {
+                console.log('ready');
                 this.hide();
                 if (this.parentNode) {
-                    this.createOverlay();
+                    createOverlay.call(this);
                 }
-                this.querySelector('.x-modal-close').addEventListener('click', this.close.bind(this), false);
+               // this.querySelector('.x-modal-close').addEventListener('click', this.close.bind(this), false);
                 var that = this;
                 document.addEventListener('keyup', function(e) {
                     if (e.which === 27 && !that.getAttribute('hidden')) {
@@ -107,25 +112,24 @@
                     }
                 }, false);
             },
-            insertedCallback: function() {
-                this.createOverlay();
+            enteredViewCallback: function() {
+                console.log('inserted');
+                createOverlay.call(this);
             },
-            removedCallback: function() {
-                this.removeOverlay();
+            leftViewCallback: function() {
+                console.log('removed');
+                removeOverlay.call(this);
             },
-            createOverlay: function() {
-                this.overlay = this.parentNode.querySelector('.x-modal-overlay');
-                if (!this.overlay) {
-                    var overlay = document.createElement('div');
-                    overlay.className += ' x-modal-overlay';
-                    overlay.setAttribute('hidden', '');
-                    this.parentNode.insertBefore(overlay, this);
-                    this.overlay = overlay;
-                }
-            },
-            removeOverlay: function() {
-                if (this.overlay) {
-                    this.parentNode.removeChild(this.overlay);
+            attributeChangedCallback: function(attributeName, oldValue) {
+                attributeName = attributeName.toLowerCase();
+                var newValue = this.getAttribute(attributeName); // paramètre manquant par rapport à la spec CustomElement
+
+                if (attributeName === 'hidden' && this.overlay) {
+                    if (newValue === null) {
+                        this.overlay.removeAttribute('hidden');
+                    } else {
+                        this.overlay.setAttribute('hidden', '');
+                    }
                 }
             }
         });
