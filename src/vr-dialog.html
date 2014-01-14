@@ -30,6 +30,14 @@
             showModal: function() {
                 this.overlay = document.createElement('vr-overlay');
                 this.parentNode.appendChild(this.overlay);
+
+                var that = this;
+                document.addEventListener('keyup', function(e) {
+                    if (e.which === 27) {
+                        that.cancel();
+                    }
+                }, false);
+                
                 this.show();
             },
             hide: function() {
@@ -37,12 +45,20 @@
                 if (this.overlay) {
                     this.parentNode.removeChild(this.overlay);
                 }
+                // FIXME : virer le listener sur le keyup
+                this.dispatchEvent(new CustomEvent('close'));
             },
             close: function() {
                 this.hide();
             },
             open: function() {
                 this.show();
+            },
+            cancel: function() {
+                var doCancel = this.dispatchEvent(new CustomEvent('cancel', { cancelable: true }));
+                if (doCancel) {
+                    this.hide();
+                }
             }
         });
     </script>

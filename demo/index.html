@@ -31,8 +31,12 @@
             document.querySelector('vr-dialog').showModal();
         }, false);
         var closeButton = document.getElementById("close");
+        var dialog = document.querySelector('vr-dialog');
+        dialog.addEventListener('close', function() {
+            console.log('close');
+        }, false);
         closeButton.addEventListener("click", function() {
-            document.querySelector('vr-dialog').hide();
+            dialog.hide();
         }, false);
     </script>
 </body>
