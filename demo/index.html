@@ -18,7 +18,7 @@
         <button id="showModal">Afficher la modale</button>
     </div>
     <x-overlay id="monBelOverlay" hidden></x-overlay>
-    <x-modal overlay="monBelOverlay" hidden>Oh mon beau contenu</x-modal>
+    <x-modal overlay="monBelOverlay" hidden><p>Oh mon beau contenu</p><button id="closeModal">Fermer la modale</button></x-modal>
 
 </body>
 
@@ -27,11 +27,18 @@
 <script type="text/javascript">
 
     document.addEventListener('DOMComponentsLoaded', function(){
+        var modal = document.querySelector("x-modal");
+
         var showModalButton = document.getElementById("showModal");
         showModalButton.addEventListener("click", function() {
-            var modal = document.querySelector("x-modal");
             modal.show();
         }, false);
+
+        var closeModalButton = document.getElementById("closeModal");
+        closeModalButton.addEventListener("click", function() {
+            modal.hide();
+        }, false);
+
     }, false);
 
 </script>
