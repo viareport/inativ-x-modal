@@ -49,7 +49,11 @@
                 this.removeAttribute('hidden');
             },
             hide: function() {
-                this.setAttribute('hidden', '');
+                var doClose = this.dispatchEvent(new CustomEvent('close', {cancelable: true}));
+                if (doClose) {
+                    console.log('vas y gros');
+                    this.setAttribute('hidden', '');
+                }
             },
             close: function() {
                 this.hide();

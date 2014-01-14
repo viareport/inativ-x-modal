@@ -19,7 +19,6 @@
     </div>
     <x-overlay id="monBelOverlay" hidden></x-overlay>
     <x-modal overlay="monBelOverlay" hidden><p>Oh mon beau contenu</p><button id="closeModal">Fermer la modale</button></x-modal>
-
 </body>
 
 <script type="text/javascript" src="/lib/x-tag-core.js"></script>
@@ -28,17 +27,26 @@
 
     document.addEventListener('DOMComponentsLoaded', function(){
         var modal = document.querySelector("x-modal");
-
         var showModalButton = document.getElementById("showModal");
+        var counter = 0;
+        console.log('add listeners');
         showModalButton.addEventListener("click", function() {
             modal.show();
         }, false);
-
         var closeModalButton = document.getElementById("closeModal");
         closeModalButton.addEventListener("click", function() {
             modal.hide();
         }, false);
-
+        modal.addEventListener("close", function(evt) {
+            console.log('close ?');
+            counter++;
+            if (counter % 2 === 0) {
+                console.log('pas close');
+                evt.preventDefault();
+            } else {
+                console.log('close');
+            }
+        }, false);
     }, false);
 
 </script>
