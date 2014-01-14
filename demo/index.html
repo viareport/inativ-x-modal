@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Modal demo</title>
+    <meta charset="utf-8">
+    <script src="x-tag-core.js"></script>
+    <script src="../dist/vr-components.js"></script>
+    <link href="../dist/vr-components.css" rel="stylesheet">
+</head>
+<body>
+    <button id="showOverlay">Show overlay</button>
+    <button id="showDialog">Show dialog</button>
+    <button id="showModal">Show modal</button>
+    <vr-dialog>
+        <h3>Prout</h3>
+        <p>Hello world</p>
+        <button id="close">Close</button>
+    </vr-dialog>
+
+    <script type="text/javascript">
+        var showOverlayButton = document.getElementById("showOverlay");
+        showOverlayButton.addEventListener("click", function() {
+            document.body.appendChild(document.createElement('vr-overlay'));
+        }, false);
+        var showDialogButton = document.getElementById("showDialog");
+        showDialogButton.addEventListener("click", function() {
+            document.querySelector('vr-dialog').show();
+        }, false);
+        var showModalButton = document.getElementById("showModal");
+        showModalButton.addEventListener("click", function() {
+            document.querySelector('vr-dialog').showModal();
+        }, false);
+        var closeButton = document.getElementById("close");
+        closeButton.addEventListener("click", function() {
+            document.querySelector('vr-dialog').hide();
+        }, false);
+    </script>
+</body>
