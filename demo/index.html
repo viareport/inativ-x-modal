@@ -17,7 +17,9 @@
     <div id="showModalContainer">
         <button id="showModal">Afficher la modale</button>
     </div>
-    <x-modal hidden>Oh mon beau contenu</x-modal>
+    <x-overlay id="monBelOverlay" hidden></x-overlay>
+    <x-modal overlay="monBelOverlay" hidden>Oh mon beau contenu</x-modal>
+
 </body>
 
 <script type="text/javascript" src="/lib/x-tag-core.js"></script>
