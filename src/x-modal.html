@@ -1,0 +1,133 @@
+<element name="x-modal">
+    <style>
+        x-modal {
+          display: block;
+          position: fixed;
+          top: 50%;
+          left: 50%;
+          -webkit-box-sizing: border-box;
+          -moz-box-sizing: border-box;
+          box-sizing: border-box;
+          -webkit-transform: translate(-50%, -50%);
+          -moz-transform: translate(-50%, -50%);
+          -ms-transform: translate(-50%, -50%);
+          -o-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+          max-width: 100%;
+          max-height: 100%;
+          overflow: auto;
+          background: white;
+          border: 1px solid #333;
+          z-index: 1;
+        }
+
+        x-modal > .x-modal-title {
+          background: lightblue;
+          position: relative;
+          min-height: 20px;
+          padding-right: 25px;
+        }
+
+        .x-modal-close {
+          position: absolute;
+          top: 4px;
+          right: 3px;
+        }
+        .x-modal-close:before {
+          content: "X";
+        }
+
+        x-modal[hidden] {
+          display: none;
+        }
+
+        .x-modal-overlay {
+          position: absolute;
+          top: -10000px;
+          right: -10000px;
+          bottom: -10000px;
+          left: -10000px;
+          background: black;
+          filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
+          opacity: 0.5;
+          display: block;
+        }
+
+        x-modal-overlay {
+          display: block;
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: #000;
+          opacity: 0.5;
+        }
+
+        .x-modal-overlay[hidden] {
+          display: none;
+        }
+    </style>
+    <template>
+        <div class="x-modal-title">
+            <span class="x-modal-title-content"><content select="h3">Title</content></span>
+            <span class="x-modal-close"></span>
+        </div>
+        <div class="x-modal-content">
+            <content select="p">Content</content>
+        </div>
+    </template>
+    <script>
+        ({
+            show: function() {
+                this.removeAttribute('hidden');
+                if (this.overlay) {
+                    this.overlay.removeAttribute('hidden');
+                }
+            },
+            hide: function() {
+                this.setAttribute('hidden', '');
+                if (this.overlay) {
+                    this.overlay.setAttribute('hidden', '');
+                }
+            },
+            close: function() {
+                this.hide();
+            },
+            readyCallback: function() {
+                this.hide();
+                if (this.parentNode) {
+                    this.createOverlay();
+                }
+                this.querySelector('.x-modal-close').addEventListener('click', this.close.bind(this), false);
+                var that = this;
+                document.addEventListener('keyup', function(e) {
+                    if (e.which === 27 && !that.getAttribute('hidden')) {
+                        that.close();
+                    }
+                }, false);
+            },
+            insertedCallback: function() {
+                this.createOverlay();
+            },
+            removedCallback: function() {
+                this.removeOverlay();
+            },
+            createOverlay: function() {
+                this.overlay = this.parentNode.querySelector('.x-modal-overlay');
+                if (!this.overlay) {
+                    var overlay = document.createElement('div');
+                    overlay.className += ' x-modal-overlay';
+                    overlay.setAttribute('hidden', '');
+                    this.parentNode.insertBefore(overlay, this);
+                    this.overlay = overlay;
+                }
+            },
+            removeOverlay: function() {
+                if (this.overlay) {
+                    this.parentNode.removeChild(this.overlay);
+                }
+            }
+        });
+    </script>
+</element>

@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <title>Modal Demo - X-Tag</title>
-	<link rel="stylesheet" type="text/css" href="/dist/inativ-x.css"/>
+	<link rel="stylesheet" type="text/css" href="../dist/stylesheets/webcomponents.css"/>
     <style>
         #showModalContainer {
             margin-top: 50px;
@@ -20,15 +20,15 @@
     <x-modal></x-modal>
 </body>
 
-<script type="text/javascript" src="/demo/x-tag-core.js"></script>      
-<script type="text/javascript" src="/demo/main.js"></script>      
+<script type="text/javascript" src="../lib/x-tag-core.js"></script>
+<script type="text/javascript" src="../dist/js/webcomponents.js"></script>
 <script type="text/javascript">
 
     document.addEventListener('DOMComponentsLoaded', function(){
         var showModalButton = document.getElementById("showModal");
         showModalButton.addEventListener("click", function() {
             var modal = document.querySelector("x-modal");
-            modal.show("Titre de la modale", "Contenu de la modale<br/>Clic sur x pour la fermer.");
+            modal.show();
         }, false);
     }, false);
 
