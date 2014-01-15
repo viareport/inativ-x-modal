@@ -1,0 +1,92 @@
+<element name="vr-selectable">
+    <style>
+        .vr-selectable-focus {
+            border: 1px solid black;
+        }
+        .vr-selectable-selected {
+            background: #e5e5e5;
+            color: white;
+        }
+    </style>
+
+    <template>
+        <content></content>
+    </template>
+        
+    <script>
+        ({
+            readyCallback: function() {
+                this.target = this.getAttribute('target') || ' > *';
+                this.setAttribute('selected', this.getAttribute('selected') || 0);
+
+                /* bind events */
+                this.keyHandler = this.keylistener.bind(this);
+
+                document.addEventListener('keyup', this.keyHandler, false);
+
+                this.clickHandler = this.clicklistener.bind(this);
+                this.addEventListener('click', this.clickHandler, false);
+            },
+
+            getItem: function(pos) {
+                var itemList = this.querySelectorAll(this.target);
+                return itemList[pos] || null;
+            },
+
+            getItemCount: function() {
+                return this.querySelectorAll(this.target).length;
+            },
+
+            ENTER: 13,
+            LEFT: 37,
+            UP: 38,
+            RIGHT: 39,
+            DOWN: 40,
+
+            keylistener: function(e) {
+                switch(e.keyCode) {
+                    case this.ENTER: {
+
+                    }
+                    case this.DOWN: {
+                        this.selectNext();
+                        break;
+                    }
+                    case this.UP: {
+                        this.selectPrevious();
+                        break;
+                    }
+                    default:
+                        return;
+                }
+            },
+
+            clicklistener: function(e) {
+                this._select_(e.target);
+            },
+
+            selectNext: function() {
+                var selected = Number(this.getAttribute('selected'));
+                if (selected < this.getItemCount() - 1) this.setAttribute('selected', ++selected);
+            },
+
+            selectPrevious: function() {
+                var selected = Number(this.getAttribute('selected'));
+                if (selected > 0) this.setAttribute('selected', --selected);
+            },
+
+            attributeChanged: function(name, oldValue, newValue) {console.log(name, oldValue, newValue);
+                if (name !== 'selected') return;
+                newValue = this.getAttribute('selected');
+                if (oldValue !== null) this.getItem(oldValue).classList.remove('vr-selectable-focus');
+                this.getItem(newValue).classList.add('vr-selectable-focus');
+            },
+
+            _select_: function(element) {
+                element.classList.add('vr-selectable-selected');
+                // trigger event "select"
+            }
+            
+        });
+    </script>
+</element>

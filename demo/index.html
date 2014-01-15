@@ -8,35 +8,91 @@
     <link href="../dist/vr-components.css" rel="stylesheet">
 </head>
 <body>
-    <button id="showOverlay">Show overlay</button>
-    <button id="showDialog">Show dialog</button>
-    <button id="showModal">Show modal</button>
-    <vr-dialog>
-        <h3>Prout</h3>
-        <p>Hello world</p>
-        <button id="close">Close</button>
-    </vr-dialog>
+    <div class="modal-exemple">
+        <button id="showOverlay">Show overlay</button>
+        <button id="showDialog">Show dialog</button>
+        <button id="showModal">Show modal</button>
+        <vr-dialog>
+            <h3>Prout</h3>
+            <p>Hello world</p>
+            <button id="close">Close</button>
+        </vr-dialog>
 
-    <script type="text/javascript">
-        var showOverlayButton = document.getElementById("showOverlay");
-        showOverlayButton.addEventListener("click", function() {
-            document.body.appendChild(document.createElement('vr-overlay'));
-        }, false);
-        var showDialogButton = document.getElementById("showDialog");
-        showDialogButton.addEventListener("click", function() {
-            document.querySelector('vr-dialog').show();
-        }, false);
-        var showModalButton = document.getElementById("showModal");
-        showModalButton.addEventListener("click", function() {
-            document.querySelector('vr-dialog').showModal();
-        }, false);
-        var closeButton = document.getElementById("close");
-        var dialog = document.querySelector('vr-dialog');
-        dialog.addEventListener('close', function() {
-            console.log('close');
-        }, false);
-        closeButton.addEventListener("click", function() {
-            dialog.hide();
-        }, false);
-    </script>
-</body>
+        <script type="text/javascript">
+            var showOverlayButton = document.getElementById("showOverlay");
+            showOverlayButton.addEventListener("click", function() {
+                document.body.appendChild(document.createElement('vr-overlay'));
+            }, false);
+            var showDialogButton = document.getElementById("showDialog");
+            showDialogButton.addEventListener("click", function() {
+                document.querySelector('vr-dialog').show();
+            }, false);
+            var showModalButton = document.getElementById("showModal");
+            showModalButton.addEventListener("click", function() {
+                document.querySelector('vr-dialog').showModal();
+            }, false);
+            var closeButton = document.getElementById("close");
+            var dialog = document.querySelector('vr-dialog');
+            dialog.addEventListener('close', function() {
+                console.log('close');
+            }, false);
+            closeButton.addEventListener("click", function() {
+                dialog.hide();
+            }, false);
+        </script>
+    </div>  
+
+    <div class="selectable-exemple">
+        <vr-selectable target="li" >
+            <ul>
+                <li>item 1</li><li>item 2</li><li>item 3</li>
+                <li>item 4</li>
+                <li>item 5</li>
+                <li>item 6</li>
+                <li>item 7</li>
+            </ul>
+        </vr-selectable>
+
+<style type="text/css">
+    td {
+        width: 100px;
+        height: 20px;
+        border: 1px solid red;
+    }
+</style>
+        <vr-selectable target=".selectable" >
+            <table style="empty-cells: show">
+                <tr>
+                    <td class="selectable"></td>
+                    <td></td>
+                    <td class="selectable"></td>
+                </tr>
+                <tr>
+                    <td class="selectable"></td>
+                    <td></td>
+                    <td class="selectable"></td>
+                </tr>
+                <tr>
+                    <td class="selectable"></td>
+                    <td></td>
+                    <td class="selectable"></td>
+                </tr>
+                <tr>
+                    <td class="selectable"></td>
+                    <td></td>
+                    <td class="selectable"></td>
+                </tr>
+                <tr>
+                    <td class="selectable"></td>
+                    <td></td>
+                    <td class="selectable"></td>
+                </tr>
+                <tr>
+                    <td class="selectable"></td>
+                    <td></td>
+                    <td class="selectable"></td>
+                </tr>
+            </table>
+        </vr-selectable>
+    </div>
+</body> 
