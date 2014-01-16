@@ -36,8 +36,7 @@ module.exports = function(grunt) {
         options: {
           port: 8020,
           base: '.',
-          hostname: '*',
-          keepalive: true
+          hostname: '*'
         }
       }
     }
@@ -50,6 +49,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-wctranspile');
   grunt.loadNpmTasks('grunt-karma');
 
-  grunt.registerTask('default', ['clean', 'wctranspile', 'watch']);
+  grunt.registerTask('default', ['clean', 'wctranspile', 'connect', 'watch']);
 
 };
