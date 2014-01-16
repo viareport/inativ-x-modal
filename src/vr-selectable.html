@@ -75,9 +75,8 @@
                 if (selected > 0) this.setAttribute('selected', --selected);
             },
 
-            attributeChanged: function(name, oldValue, newValue) {console.log(name, oldValue, newValue);
+            attributeChanged: function(name, oldValue, newValue) {
                 if (name !== 'selected') return;
-                newValue = this.getAttribute('selected');
                 if (oldValue !== null) this.getItem(oldValue).classList.remove('vr-selectable-focus');
                 this.getItem(newValue).classList.add('vr-selectable-focus');
             },
