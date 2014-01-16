@@ -16,8 +16,7 @@
     <script>
         ({
             readyCallback: function() {
-                this.target = this.getAttribute('target') || ' > *';
-                this.setAttribute('selected', this.getAttribute('selected') || 0);
+                this.selectFirst();
 
                 /* bind events */
                 this.keyHandler = this.keylistener.bind(this);
@@ -26,15 +25,37 @@
 
                 this.clickHandler = this.clicklistener.bind(this);
                 this.addEventListener('click', this.clickHandler, false);
+
+                this.observer = new MutationObserver(this.handleMutations.bind(this));
+                var config = { attributes: false, childList: true, characterData: false };
+                // pass in the target node, as well as the observer options
+                this.observer.observe(this, config);
+                //this.observer.disconnect();
+            },
+
+            handleMutations: function(mutations) {
+                mutations.forEach(function(mutation) {
+                    console.log(mutation);
+                    this.removeAttribute('selected');
+                    this.selectFirst();
+                }, this);
+            },
+
+            handleEvent: function(e) {
+                console.log(e);
             },
 
             getItem: function(pos) {
-                var itemList = this.querySelectorAll(this.target);
-                return itemList[pos] || null;
+                return this.getItems()[pos] || null;
             },
 
             getItemCount: function() {
-                return this.querySelectorAll(this.target).length;
+                return this.getItems().length;
+            },
+
+            getItems: function() {
+                var target = this.getAttribute('target');
+                return target ? this.querySelectorAll(target) : this.children;
             },
 
             ENTER: 13,
@@ -65,6 +86,11 @@
                 this._select_(e.target);
             },
 
+            selectFirst: function() {
+                if (this.getItemCount() === 0) return;
+                this.setAttribute('selected', this.getAttribute('selected') || 0);
+            },
+
             selectNext: function() {
                 var selected = Number(this.getAttribute('selected'));
                 if (selected < this.getItemCount() - 1) this.setAttribute('selected', ++selected);
@@ -76,7 +102,7 @@
             },
 
             attributeChanged: function(name, oldValue, newValue) {
-                if (name !== 'selected') return;
+                if (name !== 'selected' || newValue === null) return;
                 if (oldValue !== null) this.getItem(oldValue).classList.remove('vr-selectable-focus');
                 this.getItem(newValue).classList.add('vr-selectable-focus');
             },

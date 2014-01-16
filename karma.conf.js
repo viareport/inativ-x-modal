@@ -9,14 +9,15 @@ module.exports = function(config) {
 
 
     // frameworks to use
-    frameworks: ['mocha', 'chai'],
+    frameworks: ['mocha', 'chai', 'effroi'],
 
 
     // list of files / patterns to load in the browser
     files: [
-      'test/functional/assets/x-tag-core.js',
-      'test/functional/assets/webcomponents.js',
-      'test/functional/spec/*.js'
+      'demo/x-tag-core.js',
+      'dist/vr-components.js',
+      'test/support/tools.js',
+      'test/spec/*.js'
     ],
 
 

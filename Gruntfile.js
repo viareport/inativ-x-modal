@@ -12,7 +12,7 @@ module.exports = function(grunt) {
 
     wctranspile: {
       components: {
-        src: ['src/vr-overlay.html', 'src/vr-dialog.html', 'src/vr-selectable.html'],
+        src: ['src/*.html'],
         css: 'dist/vr-components.css',
         js:  'dist/vr-components.js'
       }
@@ -50,5 +50,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-karma');
 
   grunt.registerTask('default', ['clean', 'wctranspile', 'connect', 'watch']);
+
+  grunt.registerTask('test', ['clean', 'wctranspile', 'karma']);
 
 };

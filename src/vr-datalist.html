@@ -1,0 +1,15 @@
+<element name="vr-datalist">
+    <style>
+        vr-datalist {
+            display: none;
+        }
+    </style>
+    <template></template>
+    <script>
+        ({
+            readyCallback: function() {
+                this.options = this.querySelectorAll('option');
+            }
+        });
+    </script>
+</element>
