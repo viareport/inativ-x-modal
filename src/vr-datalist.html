@@ -4,10 +4,33 @@
             display: none;
         }
     </style>
-    <template></template>
+    <template>
+    </template>
     <script>
         ({
             readyCallback: function() {
+                this.setOptions();
+            },
+
+            insertedCallback: function() {
+                this.setOptions();
+                this.observer = new MutationObserver(this.handleMutations.bind(this));
+                var config = { attributes: false, childList: true, characterData: false };
+                // pass in the target node, as well as the observer options
+                this.observer.observe(this, config);
+            },
+
+            removedCallback: function() {
+                //this.observer.disconnect();
+            },
+
+            handleMutations: function(mutations) {
+                mutations.forEach(function(mutation) {
+                    this.setOptions();
+                }, this);
+            },
+
+            setOptions: function() {
                 this.options = this.querySelectorAll('option');
             }
         });

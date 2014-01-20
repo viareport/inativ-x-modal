@@ -1,0 +1,51 @@
+<element name="vr-combo-box">
+    <style>
+        vr-combo-box ul {
+            display: none;
+        }
+        ul[visible] {
+          display: block;
+        }
+    </style>
+    <template>
+        <input type='text' value="test"/>
+        <ul></ul>
+    </template>
+    <script>
+        ({
+            readyCallback: function() {
+                var list = this.getAttribute("list");
+                if (list === 'undefined') {
+                    throw new Error('List attribute is missing');
+                }
+
+                this.querySelector("input").addEventListener("focus", this.focus.bind(this), false);
+
+            },
+
+            focus: function() {
+                var listNode = document.querySelector("#" + this.getAttribute("list"));
+                //TODO check on a chopé un datalist, c'est bien un datalist (il a options)
+                //FIXME on pourrait tester le type de l'élément listNode == vr-datalist
+                if (listNode.options === undefined) {
+                    throw new Error('Invalid node should be a vr-datalist');
+                }
+
+                this.options = listNode.options;
+
+                this.showSuggestions();
+            },
+
+            showSuggestions: function() {
+                var ul = this.querySelector("ul");
+                ul.setAttribute("visible", "");
+                var li = document.createElement("li");
+                for (var i = 0; i < this.options.length; i++) {
+                    var dataLi = li.cloneNode();
+                    dataLi.innerHTML = this.options[i].text || this.options[i].value;
+                    ul.appendChild(dataLi);
+                }   
+            }
+        });
+    </script>
+</element>

@@ -1,12 +1,9 @@
 var kb = effroi.keyboard;
 
 describe('vr-selectable', function() {
-    before(function(done) {
-        this.selectable = appendComponent('vr-selectable', { target: 'li' }, '<ul><li>toto</li><li>toto</li><li>toto</li></ul>', done);
-    });
-
-    after(function() {
-        document.body.innerHTML = '';
+    beforeEach(function() {
+        injectHtml('<vr-selectable target="li"><ul><li>toto</li><li>toto</li><li>toto</li></ul></vr-selectable>');
+        this.selectable = document.querySelector('vr-selectable');
     });
 
     it("should set the selected attribute to 0", function() {

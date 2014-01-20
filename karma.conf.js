@@ -14,6 +14,7 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
+      'dist/vr-components.css',
       'demo/x-tag-core.js',
       'dist/vr-components.js',
       'test/support/tools.js',

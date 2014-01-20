@@ -35,7 +35,6 @@
 
             handleMutations: function(mutations) {
                 mutations.forEach(function(mutation) {
-                    console.log(mutation);
                     this.removeAttribute('selected');
                     this.selectFirst();
                 }, this);
