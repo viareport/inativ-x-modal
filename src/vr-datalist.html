@@ -7,32 +7,35 @@
     <template>
     </template>
     <script>
+
+        var setOptions = function() {
+            var options = this.querySelectorAll('option');
+            this.options.length = 0;
+            for (var i=0 ; i<options.length ; i++) {
+                this.options.push(options[i]);
+            }
+        };
+        var handleMutations = function(mutations) {
+            setOptions.call(this);
+        };
         ({
             readyCallback: function() {
-                this.setOptions();
+                this.options = [];
             },
 
             insertedCallback: function() {
-                this.setOptions();
-                this.observer = new MutationObserver(this.handleMutations.bind(this));
+                setOptions.call(this);
+
+                this._observer_ = new MutationObserver(handleMutations.bind(this));
                 var config = { attributes: false, childList: true, characterData: false };
                 // pass in the target node, as well as the observer options
-                this.observer.observe(this, config);
+                this._observer_.observe(this, config);
             },
 
             removedCallback: function() {
-                //this.observer.disconnect();
-            },
-
-            handleMutations: function(mutations) {
-                mutations.forEach(function(mutation) {
-                    this.setOptions();
-                }, this);
-            },
-
-            setOptions: function() {
-                this.options = this.querySelectorAll('option');
+                //this._observer_.disconnect();
             }
+
         });
     </script>
 </element>

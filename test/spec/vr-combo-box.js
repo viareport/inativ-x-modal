@@ -3,6 +3,7 @@ var kb = effroi.keyboard;
 describe('vr-combo-box', function() {
 
     it("should not show suggestions without focus", function() {
+        var datalist = createDatalist(['toto', 'titi'], 'data');
         var combo = createElement('vr-combo-box', {"list":"data"});
         var ul = combo.querySelector("ul");
         expect(ul).not.to.be.null;
@@ -10,16 +11,50 @@ describe('vr-combo-box', function() {
     });
 
     it("should show suggestions on focus", function() {
-        var combo = createElement('vr-combo-box', {"list":"data"});
         var datalist = createDatalist(['toto', 'titi'], 'data');
+        var combo = createElement('vr-combo-box', {"list":"data"});
 
-        kb.focus(combo);
+        combo.focus();
 
         var ul = combo.querySelector("ul");
         expect(ul).not.to.be.null;
         expect(window.getComputedStyle(ul ,null).getPropertyValue('display')).not.to.be.equals('none');
+    });
 
-        var liCollection = ul.querySelectorAll('li');
-        expect(liCollection.length).to.be.equals(datalist.options.length);
+    it("should feed suggestions on focus", function(done) {
+        var datalist = createDatalist(['toto', 'titi'], 'data');
+        var combo = createElement('vr-combo-box', {"list":"data"});
+
+       
+        then(function() {
+            // Ce qu'on souhaiterait faire avec EffroiJS 
+            //kb.focus(combo.querySelector('input'));
+            // ... mais on fait avec ce qu'on a :-(
+            combo.focus();
+
+            var ul = combo.querySelector("ul");
+            var liCollection = ul.querySelectorAll('li');
+            expect(liCollection.length).not.to.be.equals(0);
+            expect(liCollection.length).to.be.equals(datalist.options.length);
+            done();
+        });
+    });
+
+    it("should feed once suggestions on focus", function(done) {
+        var datalist = createDatalist(['toto', 'titi'], 'data');
+
+        then(function() {
+
+            var combo = createElement('vr-combo-box', {"list":"data"});
+            combo.focus();
+            combo.blur();
+            combo.focus();
+              
+            var ul = combo.querySelector("ul");
+            var liCollection = ul.querySelectorAll('li');
+            expect(liCollection.length).not.to.be.equals(0);
+            expect(liCollection.length).to.be.equals(datalist.options.length);
+            done();
+        });
     });
 });

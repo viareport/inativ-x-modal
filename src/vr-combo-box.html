@@ -12,39 +12,50 @@
         <ul></ul>
     </template>
     <script>
+        var getUl = function() {
+            // ATTENTION aux remarques déplacées
+            return this.querySelector("ul");
+        }
+
+        var updateViewData = function() {
+            var ul = getUl.call(this);
+            
+            ul.innerHTML = '';
+            var li = document.createElement("li");
+            for (var i = 0; i < this.options.length; i++) {
+                var dataLi = li.cloneNode();
+                dataLi.innerHTML = this.options[i].text || this.options[i].value;
+                ul.appendChild(dataLi);
+            }   
+        };
+
+        var bindDataList = function() {
+            var listNode = document.querySelector("#" + this.getAttribute("list"));
+            //TODO check on a chopé un datalist, c'est bien un datalist (il a options)
+            //FIXME on pourrait tester le type de l'élément listNode == vr-datalist
+            if (!listNode || listNode.options === undefined) {
+                throw new Error('Invalid node should be a vr-datalist ' + JSON.stringify(listNode));
+            }
+
+            this.options = listNode.options;
+        };
+
         ({
-            readyCallback: function() {
-                var list = this.getAttribute("list");
-                if (list === 'undefined') {
-                    throw new Error('List attribute is missing');
-                }
-
+            insertedCallback: function() {
                 this.querySelector("input").addEventListener("focus", this.focus.bind(this), false);
-
+                
+                bindDataList.call(this);
             },
 
-            focus: function() {
-                var listNode = document.querySelector("#" + this.getAttribute("list"));
-                //TODO check on a chopé un datalist, c'est bien un datalist (il a options)
-                //FIXME on pourrait tester le type de l'élément listNode == vr-datalist
-                if (listNode.options === undefined) {
-                    throw new Error('Invalid node should be a vr-datalist');
-                }
-
-                this.options = listNode.options;
-
+            focus: function() {           
                 this.showSuggestions();
-            },
+            },            
 
             showSuggestions: function() {
-                var ul = this.querySelector("ul");
+                updateViewData.call(this);
+                
+                var ul = getUl.call(this);
                 ul.setAttribute("visible", "");
-                var li = document.createElement("li");
-                for (var i = 0; i < this.options.length; i++) {
-                    var dataLi = li.cloneNode();
-                    dataLi.innerHTML = this.options[i].text || this.options[i].value;
-                    ul.appendChild(dataLi);
-                }   
             }
         });
     </script>
