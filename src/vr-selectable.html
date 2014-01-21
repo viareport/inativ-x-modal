@@ -1,12 +1,5 @@
 <element name="vr-selectable">
-    <style>
-        .vr-selectable-highlighted {
-            border: 1px solid black;
-        }
-        .vr-selectable-selected {
-            background: #e5e5e5;
-            color: white;
-        }
+    <style>        
     </style>
 
     <template>
@@ -26,14 +19,15 @@
         var keylistener = function(e) {
             switch(e.keyCode) {
                 case KEY.ENTER: {
+                    this.selectHighlighted();
                     break;
                 }
                 case KEY.DOWN: {
-                    this.selectNext();
+                    this.highlightNext();
                     break;
                 }
                 case KEY.UP: {
-                    this.selectPrevious();
+                    this.highlightPrevious();
                     break;
                 }
                 default:
@@ -43,18 +37,17 @@
 
         var handleMutations = function(mutations) {
             this.removeAttribute('selected');
-            this.selectFirst();
-        };
-
-        var select = function(element) {
-            this.setAttribute('selected', this.getItems().indexOf(element));
-            // trigger event "select"
+            highlightFirst.call(this);
         };
 
         var clicklistener = function(e) {
-            select.call(this, e.target);
+            this.select(e.target);
         };
 
+        var highlightFirst = function() {
+            if (this.getItemCount() === 0) return;
+            this.setAttribute('highlighted', this.getAttribute('highlighted') || 0); // ???
+        };
 
         ({
             readyCallback: function() {
@@ -74,22 +67,22 @@
             },
 
             insertedCallback: function() {
-                this.selectFirst();
+                highlightFirst.call(this);
             },
 
             attributeChanged: function(name, oldValue, newValue) {
-                if (name === 'selected' || newValue !== null) {
+                if (name === 'highlighted') {
                     if (oldValue !== null) {
-                        this.getItem(oldValue).classList.remove('vr-selectable-selected');
+                        this.getItem(oldValue).classList.remove('vr-selectable-highlighted');
                     }
-                    this.getItem(newValue).classList.add('vr-selectable-selected');
+                    this.getItem(newValue).classList.add('vr-selectable-highlighted');
                 }
             },
 
-
+            /*
             getSelectedItem: function() {
                 return this.getItems()[this.getAttribute('selected')] || null;
-            },
+            },*/            
 
             getItem: function(pos) {
                 return this.getItems()[pos] || null;
@@ -105,20 +98,36 @@
                 return Array.prototype.slice.call(nodes, 0);
             },
 
-            selectFirst: function() {
-                if (this.getItemCount() === 0) return;
-                this.setAttribute('selected', this.getAttribute('selected') || 0); // ???
+            // TODO Privé
+            highlightNext: function() {
+                var highlighted = Number(this.getAttribute('highlighted'));
+                if (highlighted < this.getItemCount() - 1) this.setAttribute('highlighted', ++highlighted);
             },
 
-            selectNext: function() {
-                var selected = Number(this.getAttribute('selected'));
-                if (selected < this.getItemCount() - 1) this.setAttribute('selected', ++selected);
+            // TODO Privé
+            highlightPrevious: function() {
+                var highlighted = Number(this.getAttribute('highlighted'));
+                if (highlighted > 0) this.setAttribute('highlighted', --highlighted);
             },
 
-            selectPrevious: function() {
-                var selected = Number(this.getAttribute('selected'));
-                if (selected > 0) this.setAttribute('selected', --selected);
-            }            
+            // TODO Privé
+            selectHighlighted: function() {
+                var highlighted = this.getAttribute('highlighted');
+                if (highlighted) {
+                    this.setAttribute('selected', highlighted);
+                }
+            },
+
+            select: function(element) {
+                if (element) {                   
+                    var elementIndex =  this.getItems().indexOf(element);
+
+                    this.setAttribute('highlighted', elementIndex);
+                    this.setAttribute('selected', elementIndex);
+                }
+            },
+
+
         });
     </script>
 </element>

@@ -1,4 +1,5 @@
-var kb = effroi.keyboard;
+var kb = effroi.keyboard,
+    mouse = effroi.mouse;
 
 describe('vr-selectable', function() {
     beforeEach(function() {
@@ -6,16 +7,46 @@ describe('vr-selectable', function() {
         this.selectable = document.querySelector('vr-selectable');
     });
 
-    it("should set the selected attribute to 0", function() {
-        expect(this.selectable.getAttribute('selected')).to.equal('0');
+    it("should highlight the first element", function() {
+        expect(this.selectable.getAttribute('highlighted')).to.equal('0');
     });
 
-    it("should add a class to the selected item", function() {
-        expect(document.querySelector('li').className).to.equal('vr-selectable-selected');
+    it("should add a class to the highlighted item", function() {
+        expect(document.querySelector('li').className).to.equal('vr-selectable-highlighted');
     });
 
-    it("should select the next item when pressing down key", function() {
+    it("should highlight the next item when pressing down key", function() {
         kb.hit(kb.DOWN);
+        expect(this.selectable.getAttribute('highlighted')).to.equal('1');
+    });
+
+    it("should select the highlighted item when pressing enter key", function() {
+        kb.hit(kb.DOWN);
+        var highlightedElement = this.selectable.getAttribute('highlighted');
+        kb.hit(kb.ENTER);
+        expect(this.selectable.getAttribute('selected')).to.equal(highlightedElement);
+    });
+
+    it("should select only one item", function() {
+        kb.hit(kb.DOWN);
+        kb.hit(kb.ENTER);
+        kb.hit(kb.DOWN);
+        kb.hit(kb.ENTER);
+        
+        expect(this.selectable.getAttribute('selected')).to.equal('2');
+        expect(this.selectable.getAttribute('selected')).to.equal(this.selectable.getAttribute('highlighted'));
+    });
+    /*
+    it("should highlight the hovered item", function() {
+        var element = this.selectable.querySelector('li:nth-child(2)');
+        mouse.moveTo(element);
+        expect(this.selectable.getAttribute('highlighted')).to.equal('1');
+    });*/
+
+    it("should highlight and select the cliked item", function() {
+        var element = this.selectable.querySelector('li:nth-child(2)');
+        mouse.click(element);
+        expect(this.selectable.getAttribute('highlighted')).to.equal('1');
         expect(this.selectable.getAttribute('selected')).to.equal('1');
     });
 });
