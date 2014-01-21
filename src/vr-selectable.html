@@ -1,6 +1,6 @@
 <element name="vr-selectable">
     <style>
-        .vr-selectable-focus {
+        .vr-selectable-highlighted {
             border: 1px solid black;
         }
         .vr-selectable-selected {
@@ -14,34 +14,81 @@
     </template>
         
     <script>
+
+        var KEY = {
+            ENTER: 13,
+            LEFT: 37,
+            UP: 38,
+            RIGHT: 39,
+            DOWN: 40
+        };
+
+        var keylistener = function(e) {
+            switch(e.keyCode) {
+                case KEY.ENTER: {
+                    break;
+                }
+                case KEY.DOWN: {
+                    this.selectNext();
+                    break;
+                }
+                case KEY.UP: {
+                    this.selectPrevious();
+                    break;
+                }
+                default:
+                    return;
+            }
+        };
+
+        var handleMutations = function(mutations) {
+            this.removeAttribute('selected');
+            this.selectFirst();
+        };
+
+        var select = function(element) {
+            this.setAttribute('selected', this.getItems().indexOf(element));
+            // trigger event "select"
+        };
+
+        var clicklistener = function(e) {
+            select.call(this, e.target);
+        };
+
+
         ({
             readyCallback: function() {
-                this.selectFirst();
 
                 /* bind events */
-                this.keyHandler = this.keylistener.bind(this);
+                this._keyHandler_ = keylistener.bind(this);
+                document.addEventListener('keyup', this._keyHandler_, false);
 
-                document.addEventListener('keyup', this.keyHandler, false);
+                this._clickHandler_ = clicklistener.bind(this);
+                this.addEventListener('click', this._clickHandler_, false);
 
-                this.clickHandler = this.clicklistener.bind(this);
-                this.addEventListener('click', this.clickHandler, false);
-
-                this.observer = new MutationObserver(this.handleMutations.bind(this));
+                this.observer = new MutationObserver(handleMutations.bind(this));
                 var config = { attributes: false, childList: true, characterData: false };
                 // pass in the target node, as well as the observer options
                 this.observer.observe(this, config);
                 //this.observer.disconnect();
             },
 
-            handleMutations: function(mutations) {
-                mutations.forEach(function(mutation) {
-                    this.removeAttribute('selected');
-                    this.selectFirst();
-                }, this);
+            insertedCallback: function() {
+                this.selectFirst();
             },
 
-            handleEvent: function(e) {
-                console.log(e);
+            attributeChanged: function(name, oldValue, newValue) {
+                if (name === 'selected' || newValue !== null) {
+                    if (oldValue !== null) {
+                        this.getItem(oldValue).classList.remove('vr-selectable-selected');
+                    }
+                    this.getItem(newValue).classList.add('vr-selectable-selected');
+                }
+            },
+
+
+            getSelectedItem: function() {
+                return this.getItems()[this.getAttribute('selected')] || null;
             },
 
             getItem: function(pos) {
@@ -54,40 +101,13 @@
 
             getItems: function() {
                 var target = this.getAttribute('target');
-                return target ? this.querySelectorAll(target) : this.children;
-            },
-
-            ENTER: 13,
-            LEFT: 37,
-            UP: 38,
-            RIGHT: 39,
-            DOWN: 40,
-
-            keylistener: function(e) {
-                switch(e.keyCode) {
-                    case this.ENTER: {
-
-                    }
-                    case this.DOWN: {
-                        this.selectNext();
-                        break;
-                    }
-                    case this.UP: {
-                        this.selectPrevious();
-                        break;
-                    }
-                    default:
-                        return;
-                }
-            },
-
-            clicklistener: function(e) {
-                this._select_(e.target);
+                var nodes = target ? this.querySelectorAll(target) : this.children;
+                return Array.prototype.slice.call(nodes, 0);
             },
 
             selectFirst: function() {
                 if (this.getItemCount() === 0) return;
-                this.setAttribute('selected', this.getAttribute('selected') || 0);
+                this.setAttribute('selected', this.getAttribute('selected') || 0); // ???
             },
 
             selectNext: function() {
@@ -98,19 +118,7 @@
             selectPrevious: function() {
                 var selected = Number(this.getAttribute('selected'));
                 if (selected > 0) this.setAttribute('selected', --selected);
-            },
-
-            attributeChanged: function(name, oldValue, newValue) {
-                if (name !== 'selected' || newValue === null) return;
-                if (oldValue !== null) this.getItem(oldValue).classList.remove('vr-selectable-focus');
-                this.getItem(newValue).classList.add('vr-selectable-focus');
-            },
-
-            _select_: function(element) {
-                element.classList.add('vr-selectable-selected');
-                // trigger event "select"
-            }
-            
+            }            
         });
     </script>
 </element>

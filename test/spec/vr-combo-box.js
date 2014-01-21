@@ -1,4 +1,5 @@
-var kb = effroi.keyboard;
+var kb = effroi.keyboard,
+    mouse = effroi.mouse;
 
 describe('vr-combo-box', function() {
 
@@ -18,7 +19,7 @@ describe('vr-combo-box', function() {
 
         var ul = combo.querySelector("ul");
         expect(ul).not.to.be.null;
-        expect(window.getComputedStyle(ul ,null).getPropertyValue('display')).not.to.be.equals('none');
+        expect(window.getComputedStyle(ul, null).getPropertyValue('display')).not.to.be.equals('none');
     });
 
     it("should feed suggestions on focus", function(done) {
@@ -57,4 +58,47 @@ describe('vr-combo-box', function() {
             done();
         });
     });
+
+    it("should hide suggestions on click outside", function(done) {
+        var datalist = createDatalist(['tato', 'titi'], 'data');
+        var combo = createElement('vr-combo-box', {"list":"data"});
+
+        var elsewhere = document.createElement('div');
+        elsewhere.innerHTML = 'elsewhere';
+        document.body.insertBefore(elsewhere, combo);
+
+        then(function() {
+            combo.focus();
+
+            then(function() {
+                mouse.click(elsewhere);
+
+                then(function() {
+                    var ul = combo.querySelector("ul");
+                    expect(ul).not.to.be.null;
+                    //expect(window.getComputedStyle(ul, null).getPropertyValue('display')).to.be.equals('none');
+                    expect(ul.getAttribute('visible')).to.be.null;
+                    done();
+                });
+            });
+        });
+    });
+
+    /*it("should hide suggestions on TAB key", function(done) {
+        var datalist = createDatalist(['tato', 'titi'], 'data');
+        var combo = createElement('vr-combo-box', {"list":"data"});
+
+        combo.focus();
+        then(function() {            
+            //kb.tab();
+           
+            then(function() {
+                var ul = combo.querySelector("ul");
+                expect(ul).not.to.be.null;
+                //expect(window.getComputedStyle(ul, null).getPropertyValue('display')).to.be.equals('none');
+                expect(ul.getAttribute('visible')).to.be.null;
+                done();
+            });            
+        });
+    });*/
 });

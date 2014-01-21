@@ -3,7 +3,7 @@
         vr-combo-box ul {
             display: none;
         }
-        ul[visible] {
+        vr-combo-box ul[visible] {
           display: block;
         }
     </style>
@@ -40,12 +40,40 @@
             this.options = listNode.options;
         };
 
+        var clickOutsideListener = function(evt) {
+            if (this !== evt.target && !this.contains(evt.target)) {
+                this.hideSuggestions();
+            }
+        };
+
         ({
+            readyCallback: function() {
+                this._clickOutsideListener_ = clickOutsideListener.bind(this);
+                this._focusListener_ = this.focus.bind(this);
+            },
+
             insertedCallback: function() {
-                this.querySelector("input").addEventListener("focus", this.focus.bind(this), false);
-                
+                this.querySelector("input").addEventListener("focus", this._focusListener_, false);
+
                 bindDataList.call(this);
             },
+
+            attributeChanged: function(attributeName, oldValue, newValue) {
+                attributeName = attributeName.toLowerCase();
+                
+                if (attributeName === 'list') {
+                    bindDataList.call(this);
+                }
+            },
+
+            removedCallback: function() {
+                var input = this.querySelector("input");
+                if (input) {
+                    input.removeEventListener("focus", this._focusListener_, false);
+                }
+                document.body.removeEventListener('click', this._clickOutsideListener_, false);
+            },
+
 
             focus: function() {           
                 this.showSuggestions();
@@ -53,9 +81,18 @@
 
             showSuggestions: function() {
                 updateViewData.call(this);
-                
+
                 var ul = getUl.call(this);
                 ul.setAttribute("visible", "");
+
+                document.body.addEventListener('click', this._clickOutsideListener_, false);
+            },            
+
+            hideSuggestions: function() {
+                document.body.removeEventListener('click', this._clickOutsideListener_, false);
+
+                var ul = getUl.call(this);
+                ul.removeAttribute("visible");
             }
         });
     </script>

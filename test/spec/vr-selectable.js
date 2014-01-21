@@ -11,7 +11,7 @@ describe('vr-selectable', function() {
     });
 
     it("should add a class to the selected item", function() {
-        expect(document.querySelector('li').className).to.equal('vr-selectable-focus');
+        expect(document.querySelector('li').className).to.equal('vr-selectable-selected');
     });
 
     it("should select the next item when pressing down key", function() {

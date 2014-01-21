@@ -22,28 +22,21 @@ function createDatalist(options, id) {
 
 describe('vr-datalist', function() {
 
-    it("may be created without options", function(done) {
+    it("may be created without options", function() {
         var datalist = createDatalist();
         expect(datalist).to.have.property('options');
         expect(datalist.options.length).to.equal(0);
-        done();
     });
 
-    it("may be created with options", function(done) {
+    it("may be created with options", function() {
         var datalist = createDatalist(['toto', 'titi']);
-        then(function() {
-            expect(datalist).to.have.property('options');
-            expect(datalist.options.length).to.equal(2);
-            done();
-        });
+        expect(datalist).to.have.property('options');
+        expect(datalist.options.length).to.equal(2);
     });
 
-    it("should update its options property when options are added", function(done) {
+    it("should update its options property when options are added", function() {
         var datalist = createDatalist(['toto', 'titi']);
         addDatalistOption(datalist, 'tata');
-        then(function() {
-            expect(datalist.options.length).to.equal(3);
-            done();
-        });
+        expect(datalist.options.length).to.equal(3);
     });
 });
