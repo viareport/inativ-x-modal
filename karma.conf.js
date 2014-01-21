@@ -16,6 +16,7 @@ module.exports = function(config) {
     files: [
       'dist/vr-components.css',
       'demo/x-tag-core.js',
+      'src/lib.js',
       'dist/vr-components.js',
       'test/support/tools.js',
       'test/spec/*.js'
