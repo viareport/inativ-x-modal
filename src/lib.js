@@ -31,6 +31,12 @@
         return fragClone;
     }
 
+    function handleChildListMutations(mutations) {
+        mutations.forEach(function(mutation) {
+            this.childListChangedCallback(mutation);
+        }, this);
+    }
+
     var VRComponents = {
         registerElement: function(name, template, behavior) {
             var propertiesObject = {};
@@ -43,6 +49,15 @@
                 enumerable: true,
                 value: function () {
                     this.appendChild(inflateFragment(createFragment(this.template), this));
+
+                    if (this.childListChangedCallback) {
+                        var observer = new MutationObserver(handleChildListMutations.bind(this)),
+                            config = { attributes: false, childList: true, characterData: false };
+
+                        observer.observe(this, config);
+                        // TODO: il faudrait le disconnect à un moment...
+                    }
+                    
                     var output = created ? created.apply(this, arguments) : null;
                     return output || null;
                 }
@@ -62,8 +77,18 @@
                 };
             }
 
+            if (behavior.childListChanged) 
+                propertiesObject.childListChangedCallback = { enumerable: true, value: behavior.childListChanged };
 
-            var userlandCallbacks = ['readyCallback', 'createdCallback', 'insertedCallback', 'removedCallback', 'attributeChanged'];
+
+            var userlandCallbacks = [
+                'readyCallback', 
+                'createdCallback',
+                'insertedCallback',
+                'removedCallback',
+                'attributeChanged',
+                'childListChanged'
+            ];
             Object.getOwnPropertyNames(behavior).forEach(function(key) {
                 if (userlandCallbacks.indexOf(key) === -1) {
                     var descriptor = Object.getOwnPropertyDescriptor(behavior, key);
