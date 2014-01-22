@@ -36,12 +36,31 @@ describe('vr-selectable', function() {
         expect(this.selectable.getAttribute('selected')).to.equal('2');
         expect(this.selectable.getAttribute('selected')).to.equal(this.selectable.getAttribute('highlighted'));
     });
-    /*
+    
     it("should highlight the hovered item", function() {
+        // given
+        expect(this.selectable.getAttribute('highlighted')).to.equal('0');
+        mouse.moveTo(this.selectable.querySelector('li:nth-child(1)'));
+
+        // when
         var element = this.selectable.querySelector('li:nth-child(2)');
         mouse.moveTo(element);
+
+        // then
         expect(this.selectable.getAttribute('highlighted')).to.equal('1');
-    });*/
+    });
+
+    it("should keep highlight when mouse is moved outside", function() {
+        // given
+        expect(this.selectable.getAttribute('highlighted')).to.equal('0');
+        
+        // when
+        injectHtml('<div id="somewhere">somewhere</div>');
+        mouse.moveTo(document.getElementById('somewhere'));
+
+        // then
+        expect(this.selectable.getAttribute('highlighted')).to.equal('0');
+    });
 
     it("should highlight and select the cliked item", function() {
         var element = this.selectable.querySelector('li:nth-child(2)');
