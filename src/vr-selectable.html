@@ -3,7 +3,9 @@
     </style>
 
     <template>
-        <content></content>
+        <div tabindex="-1">
+            <content></content>
+        </div>
     </template>
         
     <script>
@@ -54,7 +56,7 @@
 
                 /* bind events */
                 this._keyHandler_ = keylistener.bind(this);
-                document.addEventListener('keyup', this._keyHandler_, false);
+                this.addEventListener('keyup', this._keyHandler_, false);
 
                 this._clickHandler_ = clicklistener.bind(this);
                 this.addEventListener('click', this._clickHandler_, false);
@@ -131,9 +133,17 @@
             highlight: function(element) {
                 if (element) {                   
                     var elementIndex =  this.getItems().indexOf(element);
-
+                    this.focus();
                     this.setAttribute('highlighted', elementIndex);
                 }
+            },
+
+            focus: function() {
+                this.querySelector("div").focus();
+            },
+
+            blur: function() {
+                this.querySelector("div").blur();
             },
 
             select: function(element) {

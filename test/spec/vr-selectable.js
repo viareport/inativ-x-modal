@@ -5,6 +5,7 @@ describe('vr-selectable', function() {
     beforeEach(function() {
         injectHtml('<vr-selectable target="li"><ul><li>toto</li><li>toto</li><li>toto</li></ul></vr-selectable>');
         this.selectable = document.querySelector('vr-selectable');
+        this.selectable.focus();
     });
 
     it("should highlight the first element", function() {
@@ -68,4 +69,13 @@ describe('vr-selectable', function() {
         expect(this.selectable.getAttribute('highlighted')).to.equal('1');
         expect(this.selectable.getAttribute('selected')).to.equal('1');
     });
+
+    it("should highlight on keypress only if focused", function() {
+        this.selectable.blur();
+        expect(document.activeElement).not.to.be.equal(this.selectable);
+        kb.hit(kb.DOWN);
+        expect(this.selectable.getAttribute('highlighted')).to.equal('0');
+    });
+
+
 });
