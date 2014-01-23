@@ -61,6 +61,9 @@
                 this._clickHandler_ = clicklistener.bind(this);
                 this.addEventListener('click', this._clickHandler_, false);
 
+                this._blur_ = this.doBlur.bind(this);
+                this.querySelector("div").addEventListener('blur', this._blur_, false)
+
                 this.addEventListener('mouseover', this.mouseoverListener, false);
 
                 this.observer = new MutationObserver(handleMutations.bind(this));
@@ -76,11 +79,20 @@
 
             attributeChanged: function(name, oldValue, newValue) {
                 if (name === 'highlighted') {
-                    if (oldValue !== null) {
-                        this.getItem(oldValue).classList.remove('vr-selectable-highlighted');
-                    }
-                    
-                    this.getItem(newValue).classList.add('vr-selectable-highlighted');
+                    this.toggleItemClass('vr-selectable-highlighted', oldValue, newValue);
+                } else if (name === 'selected') {
+                    this.toggleItemClass('vr-selectable-selected', oldValue, newValue);
+                }
+            },
+
+            //TODO privé
+            toggleItemClass: function(className, oldIndex, newIndex) {
+                if (oldIndex !== null) {
+                    this.getItem(oldIndex).classList.remove(className);
+                }
+                
+                if (newIndex !== null) {
+                    this.getItem(newIndex).classList.add(className);
                 }
             },
 
@@ -142,8 +154,16 @@
                 this.querySelector("div").focus();
             },
 
+            //TODO Privé
+            doBlur: function() {
+                this.removeAttribute('highlighted');
+            },
+
             blur: function() {
-                this.querySelector("div").blur();
+                var focus = document.createEvent('Event');
+                focus.initEvent("blur", false, false);
+
+                this.querySelector("div").dispatchEvent(focus);
             },
 
             select: function(element) {
@@ -155,8 +175,6 @@
                     this.setAttribute('selected', elementIndex);
                 }
             },
-
-
         });
     </script>
 </element>
