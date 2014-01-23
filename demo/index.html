@@ -44,7 +44,30 @@
     </div>  
 
     <div class="selectable-exemple">
-        <vr-selectable target="li" >
+        <style type="text/css">
+            td {
+                width: 100px;
+                height: 20px;
+                border: 1px solid red;
+            }
+
+            .vr-selectable-highlighted {
+                border: 1px solid black;
+            }
+            
+        </style>
+
+        <vr-selectable target="li" id="selectable-1">
+            <ul>
+                <li>item 1</li><li>item 2</li><li>item 3</li>
+                <li>item 4</li>
+                <li>item 5</li>
+                <li>item 6</li>
+                <li>item 7</li>
+            </ul>
+        </vr-selectable>        
+
+        <vr-selectable target="li" id="selectable-2">
             <ul>
                 <li>item 1</li><li>item 2</li><li>item 3</li>
                 <li>item 4</li>
@@ -53,60 +76,14 @@
                 <li>item 7</li>
             </ul>
         </vr-selectable>
+    </div>
 
+    <div class="combobox-exemple">
+        <vr-combo-box list="data"></vr-combo-box>
         <vr-datalist id="data">
             <option is="vr-option" value="Titi"></option>
             <vr-option value="Toto"></vr-option>
             <option value="value"></option>
         </vr-datalist>
-        <vr-combo-box list="data"></vr-combo-box>
-
-<style type="text/css">
-
-    td {
-        width: 100px;
-        height: 20px;
-        border: 1px solid red;
-    }
-
-    .vr-selectable-highlighted {
-        border: 1px solid black;
-    }
-    
-</style>
-        <vr-selectable target=".selectable" >
-            <table style="empty-cells: show">
-                <tr>
-                    <td class="selectable"></td>
-                    <td></td>
-                    <td class="selectable"></td>
-                </tr>
-                <tr>
-                    <td class="selectable"></td>
-                    <td></td>
-                    <td class="selectable"></td>
-                </tr>
-                <tr>
-                    <td class="selectable"></td>
-                    <td></td>
-                    <td class="selectable"></td>
-                </tr>
-                <tr>
-                    <td class="selectable"></td>
-                    <td></td>
-                    <td class="selectable"></td>
-                </tr>
-                <tr>
-                    <td class="selectable"></td>
-                    <td></td>
-                    <td class="selectable"></td>
-                </tr>
-                <tr>
-                    <td class="selectable"></td>
-                    <td></td>
-                    <td class="selectable"></td>
-                </tr>
-            </table>
-        </vr-selectable>
     </div>
 </body> 
