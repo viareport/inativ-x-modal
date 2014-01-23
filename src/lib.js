@@ -63,10 +63,12 @@
                 }
             };
 
-            if (behavior.insertedCallback) 
-                propertiesObject.enteredDocumentCallback = { enumerable: true, value: behavior.insertedCallback };
-            if (behavior.removedCallback) 
-                propertiesObject.leftDocumentCallback = { enumerable: true, value: behavior.removedCallback };
+            var attached = behavior.insertedCallback || behavior.attachedCallback;
+            if (attached) 
+                propertiesObject.attachedCallback = { enumerable: true, value: attached };
+            var detached = behavior.removedCallback || behavior.detachedCallback
+            if (detached) 
+                propertiesObject.detachedCallback = { enumerable: true, value: detached };
 
             if (behavior.attributeChanged) {
                 propertiesObject.attributeChangedCallback = {
