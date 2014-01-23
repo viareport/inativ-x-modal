@@ -3,7 +3,9 @@
     </style>
 
     <template>
-        <content></content>
+        <div tabindex="-1">
+            <content></content>
+        </div>
     </template>
         
     <script>
@@ -54,10 +56,12 @@
 
                 /* bind events */
                 this._keyHandler_ = keylistener.bind(this);
-                document.addEventListener('keyup', this._keyHandler_, false);
+                this.addEventListener('keyup', this._keyHandler_, false);
 
                 this._clickHandler_ = clicklistener.bind(this);
                 this.addEventListener('click', this._clickHandler_, false);
+
+                this.addEventListener('mouseover', this.mouseoverListener, false);
 
                 this.observer = new MutationObserver(handleMutations.bind(this));
                 var config = { attributes: false, childList: true, characterData: false };
@@ -75,6 +79,7 @@
                     if (oldValue !== null) {
                         this.getItem(oldValue).classList.remove('vr-selectable-highlighted');
                     }
+                    
                     this.getItem(newValue).classList.add('vr-selectable-highlighted');
                 }
             },
@@ -118,7 +123,31 @@
                 }
             },
 
+            // TODO Privé
+            mouseoverListener: function(e) {
+                if(this.getItems().indexOf(e.target) >= 0) {
+                    this.highlight(e.target);
+                }
+            },
+
+            highlight: function(element) {
+                if (element) {                   
+                    var elementIndex =  this.getItems().indexOf(element);
+                    this.focus();
+                    this.setAttribute('highlighted', elementIndex);
+                }
+            },
+
+            focus: function() {
+                this.querySelector("div").focus();
+            },
+
+            blur: function() {
+                this.querySelector("div").blur();
+            },
+
             select: function(element) {
+
                 if (element) {                   
                     var elementIndex =  this.getItems().indexOf(element);
 
