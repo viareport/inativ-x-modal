@@ -45,6 +45,9 @@
 
     <div class="selectable-exemple">
         <style type="text/css">
+            ul {
+                margin: 20px;
+            }
             td {
                 width: 100px;
                 height: 20px;
@@ -58,10 +61,18 @@
             .vr-selectable-selected {
                 background-color: cyan;
             }
+
+            vr-selectable:focus {
+                background: green;
+            }
+            vr-selectable {
+                padding: 50px;
+                background: pink;
+            }
             
         </style>
 
-        <vr-selectable target="li" id="selectable-1">
+        <vr-selectable target="li" id="selectable-1" tabindex="1">
             <ul>
                 <li>item 1</li><li>item 2</li><li>item 3</li>
                 <li>item 4</li>
@@ -71,7 +82,7 @@
             </ul>
         </vr-selectable>        
 
-        <vr-selectable target="li" id="selectable-2">
+        <vr-selectable target="li" id="selectable-2" tabindex="2">
             <ul>
                 <li>item 1</li><li>item 2</li><li>item 3</li>
                 <li>item 4</li>
@@ -80,14 +91,25 @@
                 <li>item 7</li>
             </ul>
         </vr-selectable>
+
+        <select>
+            <option>opt1</option>
+            <option>opt2</option>
+            <option>opt1</option>
+            <option>opt2</option>
+            <option>opt1</option>
+            <option>opt2</option>
+            <option>opt1</option>
+            <option>opt2</option>
+        </select>
     </div>
 
     <div class="combobox-exemple">
-        <vr-combo-box list="data"></vr-combo-box>
         <vr-datalist id="data">
             <option is="vr-option" value="Titi"></option>
             <vr-option value="Toto"></vr-option>
             <option value="value"></option>
         </vr-datalist>
+        <vr-combo-box list="data"></vr-combo-box>
     </div>
 </body> 
