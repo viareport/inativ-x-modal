@@ -108,7 +108,7 @@ describe('vr-selectable', function() {
         mouse.moveTo(element);
 
         // then
-        expect(document.activeElement).not.to.be.equal(this.selectable);
+        expect(document.activeElement).to.be.equal(this.selectable);
     });
 
     it("should highlight on keypress only if focused", function() {
