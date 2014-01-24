@@ -136,4 +136,28 @@ describe('vr-selectable', function() {
         //THEN
         expect(this.selectable.hasAttribute('highlighted')).to.be.false;
     });
+
+    it("should notify of the selection of an item", function() {
+        //GIVEN
+        var selected = null,
+            observer = new MutationObserver(function (mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.attributeName === 'selected') {
+                    selected = mutation.target.getSelectedItem();
+                }
+            });
+        });
+        var config = { attributes: true, childList: false, characterData: false };
+        // pass in the target node, as well as the observer options
+        observer.observe(this.selectable, config);
+
+        //WHEN
+        var element = this.selectable.querySelector('li:nth-child(2)');
+        mouse.click(element);
+
+        //THEN
+        then(function() {
+            expect(selected).to.equal(element);
+        });
+    });
 });
