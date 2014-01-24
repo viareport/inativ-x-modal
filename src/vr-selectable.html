@@ -7,9 +7,7 @@
     </style>
 
     <template>
-        <div tabindex="-1">
-            <content></content>
-        </div>
+        <content></content>
     </template>
         
     <script>
@@ -65,9 +63,7 @@
                 this._clickHandler_ = clicklistener.bind(this);
                 this.addEventListener('click', this._clickHandler_, false);
 
-                this._blur_ = this.doBlur.bind(this);
-                //FIXME div pour les tests quel effroi :) on reçoit pas l'évènement blur correctement dans les tests
-                this.querySelector("div").addEventListener('blur', this._blur_, false)
+                this.addEventListener('blur', this.blur, false)
 
                 this.addEventListener('mouseover', this.mouseoverListener, false);
 
@@ -158,16 +154,8 @@
                 }
             },
 
-            //TODO Privé
-            doBlur: function() {
-                this.removeAttribute('highlighted');
-            },
-
             blur: function() {
-                var focus = document.createEvent('Event');
-                focus.initEvent("blur", false, false);
-                //FIXME div pour les tests quel effroi :) on reçoit pas l'évènement blur correctement dans les tests
-                this.querySelector("div").dispatchEvent(focus);
+                this.removeAttribute('highlighted');
             },
 
             select: function(element) {
