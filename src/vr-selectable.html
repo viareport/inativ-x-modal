@@ -65,8 +65,6 @@
 
                 this.addEventListener('blur', this.blur, false)
 
-                this.addEventListener('mouseover', this.mouseoverListener, false);
-
                 this.observer = new MutationObserver(handleMutations.bind(this));
                 var config = { attributes: false, childList: true, characterData: false };
                 // pass in the target node, as well as the observer options
@@ -136,13 +134,6 @@
                 var highlighted = this.getAttribute('highlighted');
                 if (highlighted) {
                     this.setAttribute('selected', highlighted);
-                }
-            },
-
-            // TODO Privé
-            mouseoverListener: function(e) {
-                if(this.getItems().indexOf(e.target) >= 0) {
-                    this.highlight(e.target);
                 }
             },
 

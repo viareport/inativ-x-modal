@@ -59,7 +59,7 @@ describe('vr-combo-box', function() {
         });
     });
 
-    it("should hide suggestions on click outside", function(done) {
+    it("should hide suggestions on click outside", function() {
         var datalist = createDatalist(['tato', 'titi'], 'data');
         var combo = createElement('vr-combo-box', {"list":"data"});
 
@@ -67,21 +67,14 @@ describe('vr-combo-box', function() {
         elsewhere.innerHTML = 'elsewhere';
         document.body.insertBefore(elsewhere, combo);
 
-        then(function() {
-            combo.focus();
+        combo.focus();
 
-            then(function() {
-                mouse.click(elsewhere);
+        mouse.click(elsewhere);
 
-                then(function() {
-                    var ul = combo.querySelector("ul");
-                    expect(ul).not.to.be.null;
-                    //expect(window.getComputedStyle(ul, null).getPropertyValue('display')).to.be.equals('none');
-                    expect(ul.getAttribute('visible')).to.be.null;
-                    done();
-                });
-            });
-        });
+        var ul = combo.querySelector("ul");
+        expect(ul).not.to.be.null;
+        //expect(window.getComputedStyle(ul, null).getPropertyValue('display')).to.be.equals('none');
+        expect(ul.getAttribute('visible')).to.be.null;
     });
 
     /*it("should hide suggestions on TAB key", function(done) {
